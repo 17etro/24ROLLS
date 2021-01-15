@@ -1,0 +1,29 @@
+.modal-for-change-start-city {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & p {
+        & span {
+            font-weight: 700;
+            font-size: 20px;
+            margin-left: 10px;
+            &:hover {
+                text-decoration: underline;
+                color: forestgreen;
+                cursor: pointer;
+            }
+        }
+    }
+    & ul {
+        list-style-type: none;
+        & li {
+            font-weight: 700;
+            font-size: 20px;
+            &:hover {
+                text-decoration: underline;
+                color: forestgreen;
+                cursor: pointer;
+            }
+        }
+    }
+}
