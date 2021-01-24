@@ -1,11 +1,13 @@
 @font-face {
     font-family: 'Century Gothic';
-    src: url('../font/CenturyGothic.woff') format('woff')
+    src: url('../font/CenturyGothic.woff') format('woff');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Century Gothic Bold';
-    src: url('../font/CenturyGothic-Bold.woff') format('woff')
+    src: url('../font/CenturyGothic-Bold.woff') format('woff');
+    font-display: swap;
 }
 
 * {
