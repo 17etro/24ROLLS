@@ -1,3 +1,3 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Sitemap: https://24rolls.zp.ua/sitemap.xml
+Host: 24rolls.zp.ua
