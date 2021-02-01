@@ -1,0 +1,2 @@
+(this["webpackJsonp24-rols"]=this["webpackJsonp24-rols"]||[]).push([[13],{257:function(s,e,t){"use strict";t.r(e);var r=t(0),n=(t(1),t(53));e.default=function(s){return Object(r.jsx)(n.a,{forMobile:!0,presents:s.presents})}}}]);
+//# sourceMappingURL=13.c95c966f.chunk.js.map
