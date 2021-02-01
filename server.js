@@ -10,6 +10,7 @@ const app = express();
 app.use(async (req, res, next) => {
     try {
         const seo = await axios.get(backendUrl + '/seo/');
+
         const mainSeo = seo.data.message.filter(el => el.name === 'Menu')[0];
         const deliverySeo = seo.data.message.filter(el => el.name === 'Delivery')[0];
         const contactsSeo = seo.data.message.filter(el => el.name === 'Contacts')[0];
@@ -111,29 +112,8 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
   });
 });
 
-//shares
-app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
-  const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.sharesSeo;
-
-  // read in the index.html file
-  fs.readFile(filePath, 'utf8', function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-    
-    // replace the special strings with server generated strings
-    data = data.replace(/\$DESCRIPTION/g, seoObj.description);
-    data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
-    data = data.replace(/\$OG_TITLE/g, seoObj.title);
-    data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
-    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
-    res.send(result);
-  });
-});
-
 //contacts
-app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
+app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.contactsSeo;
 
@@ -152,7 +132,6 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
     res.send(result);
   });
 });
-
 
 app.use(express.static(path.resolve(__dirname, '.')));
 
