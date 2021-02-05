@@ -35,6 +35,9 @@
 <url> <loc>https://24rolls.zp.ua/zp/classic</loc> </url>
 <url> <loc>https://24rolls.zp.ua/dp/classic</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/classic</loc> </url>
+<url> <loc>https://24rolls.zp.ua/zp/much_cheese</loc> </url>
+<url> <loc>https://24rolls.zp.ua/dp/much_cheese</loc> </url>
+<url> <loc>https://24rolls.zp.ua/kh/much_cheese</loc> </url>
 <url> <loc>https://24rolls.zp.ua/zp/popular</loc> </url>
 <url> <loc>https://24rolls.zp.ua/dp/popular</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/popular</loc> </url>
@@ -79,8 +82,6 @@
 <url> <loc>https://24rolls.zp.ua/kh/rolls/88e4e243-c6cf-4dfd-8cac-8b46a569194a</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/84f56650-e782-4ce8-9439-71d8a2068526</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/653e971f-a87f-47dc-a5da-d7a09cf7f249</loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/rolls/653e971f-a87f-47dc-a5da-d7a09cf7f249</loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/rolls/653e971f-a87f-47dc-a5da-d7a09cf7f249</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/be1fd47e-f333-428d-8414-966519bc59ec</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/ec1c991e-51f3-4eca-a26c-6b13e389282b</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/de4617ac-fd99-440d-a82e-d19d673bace0</loc> </url>
@@ -122,6 +123,4 @@
 <url> <loc>https://24rolls.zp.ua/kh/rolls/8c86a787-5ec4-4711-b867-32b2637e9be9</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/0c7f4521-01e9-438d-a255-095ae36eb64f</loc> </url>
 <url> <loc>https://24rolls.zp.ua/kh/rolls/qwer</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/salads/fffff</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/salads/111</loc> </url>
 </urlset>
