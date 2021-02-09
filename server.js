@@ -166,6 +166,7 @@ app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
+  console.log(product);
 
   if (!product) {
     next();
@@ -221,6 +222,7 @@ app.get(['/zp/:routeCat', '/dp/:routeCat', '/kh/:routeCat'], (req, res, next) =>
   const routeCat = req.params.routeCat;
 
   const category = categories.filter(el => el.route === routeCat)[0];
+  console.log(category);
 
   if (!category) {
     next();
@@ -248,6 +250,7 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   const postRoute = req.params.postRoute;
 
   const post = posts.filter(el => el.route === postRoute)[0];
+  console.log(post)
 
   if (!post) {
     next();
@@ -268,28 +271,27 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   }
 });
 
-
-
 app.use(express.static(path.resolve(__dirname, '.')));
 
 app.get('*', function(req, res) {
 
-    const mainSeo = req.mainSeo
+  const mainSeo = req.mainSeo;
+  console.log(main);
 
-    const filePath = path.resolve(__dirname, 'index.html');
-    fs.readFile(filePath, 'utf8', function (err,data) {
-      if (err) {
-        return console.log(err);
-      }
-      
-      // replace the special strings with server generated strings
-      data = data.replace(/\$DESCRIPTION/g, mainSeo.seo_description);
-      data = data.replace(/\$KEYWORDS/g, mainSeo.seo_keywords);
-      data = data.replace(/\$OG_TITLE/g, mainSeo.seo_title);
-      data = data.replace(/\$OG_DESCRIPTION/g, mainSeo.seo_description);
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + mainSeo.image);
-      res.send(result);
-    });
+  const filePath = path.resolve(__dirname, 'index.html');
+  fs.readFile(filePath, 'utf8', function (err,data) {
+    if (err) {
+      return console.log(err);
+    }
+    
+    // replace the special strings with server generated strings
+    data = data.replace(/\$DESCRIPTION/g, mainSeo.seo_description);
+    data = data.replace(/\$KEYWORDS/g, mainSeo.seo_keywords);
+    data = data.replace(/\$OG_TITLE/g, mainSeo.seo_title);
+    data = data.replace(/\$OG_DESCRIPTION/g, mainSeo.seo_description);
+    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + mainSeo.image);
+    res.send(result);
   });
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
