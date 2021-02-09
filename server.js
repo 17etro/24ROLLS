@@ -13,13 +13,15 @@ app.use((req, res, next) => {
           axios.get(backendUrl + '/seo/'),
           axios.get(backendUrl + '/products/'),
           axios.get(backendUrl + '/products/filters'),
-          axios.get(backendUrl + '/products/categories')
+          axios.get(backendUrl + '/products/categories'),
+          axios.get(backendUrl + /posts/)
 
         ]).then(values => {
             const products = values[1].data.message;
             const seo = values[0].data.message;
             const filters = values[2].data.fils;
             const categories = values[3].data.cats;
+            const posts = values[4].data;
 
             const mainSeo = seo.filter(el => el.name === 'Menu')[0];
             const deliverySeo = seo.filter(el => el.name === 'Delivery')[0];
@@ -38,6 +40,7 @@ app.use((req, res, next) => {
             req.products = products;
             req.categories = categories;
             req.filters = filters;
+            req.posts = posts;
 
             next();
         })
@@ -159,12 +162,14 @@ app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/
 
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-  if (routeCat === 'order') {
+
+  const product = products.filter(el => {
+    return el.route === routeProd && el.categoryId.route === routeCat
+  })[0];
+
+  if (!product) {
     next();
   } else {
-    const product = products.filter(el => {
-      return el.route === routeProd && el.categoryId.route === routeCat
-    })[0];
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
         return console.log(err);
@@ -236,12 +241,55 @@ app.get(['/zp/:routeCat', '/dp/:routeCat', '/kh/:routeCat'], (req, res, next) =>
   }
 });
 
+//posts
+app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute'], (req, res, next) => {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const posts = req.posts;
+  const postRoute = req.params.postRoute;
+
+  const post = posts.filter(el => el.route === postRoute)[0];
+
+  if (!post) {
+    next();
+  } else {
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      
+      // replace the special strings with server generated strings
+      data = data.replace(/\$DESCRIPTION/g, post.seo_description);
+      data = data.replace(/\$KEYWORDS/g, post.seo_keywords);
+      data = data.replace(/\$OG_TITLE/g, post.seo_title);
+      data = data.replace(/\$OG_DESCRIPTION/g, post.seo_description);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + post.image);
+      res.send(result);
+    });
+  }
+});
+
+
 
 app.use(express.static(path.resolve(__dirname, '.')));
 
-app.get('*', function(request, response) {
+app.get('*', function(req, res) {
+
+    const mainSeo = req.mainSeo
+
     const filePath = path.resolve(__dirname, 'index.html');
-    response.sendFile(filePath);
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      
+      // replace the special strings with server generated strings
+      data = data.replace(/\$DESCRIPTION/g, mainSeo.seo_description);
+      data = data.replace(/\$KEYWORDS/g, mainSeo.seo_keywords);
+      data = data.replace(/\$OG_TITLE/g, mainSeo.seo_title);
+      data = data.replace(/\$OG_DESCRIPTION/g, mainSeo.seo_description);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + mainSeo.image);
+      res.send(result);
+    });
   });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
