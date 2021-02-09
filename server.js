@@ -7,6 +7,8 @@ const backendUrl = 'https://backend.24rolls.com.ua';
 
 const app = express();
 
+app.use(express.static(path.resolve(__dirname, '.')));
+
 app.use((req, res, next) => {
         Promise.all([
 
@@ -57,7 +59,7 @@ app.get(['/', '/zp', '/dp', '/kh'], function(req, res) {
     // read in the index.html file
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
-        return console.log(err);
+        console.log(err);
       }
       
       // replace the special strings with server generated strings
@@ -78,7 +80,7 @@ app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
-      return console.log(err);
+      console.log(err);
     }
     
     // replace the special strings with server generated strings
@@ -99,7 +101,7 @@ app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
-      return console.log(err);
+      console.log(err);
     }
     
     // replace the special strings with server generated strings
@@ -120,7 +122,7 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
-      return console.log(err);
+      console.log(err);
     }
     
     // replace the special strings with server generated strings
@@ -141,7 +143,7 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
-      return console.log(err);
+      console.log(err);
     }
     
     // replace the special strings with server generated strings
@@ -201,7 +203,7 @@ app.get(['/zp/:routeFil', '/dp/:routeFil', '/kh/:routeFil'], (req, res, next) =>
   } else {
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
-        return console.log(err);
+        console.log(err);
       }
       
       // replace the special strings with server generated strings
@@ -229,7 +231,7 @@ app.get(['/zp/:routeCat', '/dp/:routeCat', '/kh/:routeCat'], (req, res, next) =>
   } else {
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
-        return console.log(err);
+        console.log(err);
       }
       
       // replace the special strings with server generated strings
@@ -257,7 +259,7 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   } else {
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
-        return console.log(err);
+        console.log(err);
       }
       
       // replace the special strings with server generated strings
@@ -271,17 +273,15 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   }
 });
 
-app.use(express.static(path.resolve(__dirname, '.')));
-
 app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
-  console.log(main);
+  console.log(mainSeo);
 
   const filePath = path.resolve(__dirname, 'index.html');
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
-      return console.log(err);
+      console.log(err);
     }
     
     // replace the special strings with server generated strings
