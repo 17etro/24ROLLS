@@ -9,12 +9,18 @@ const app = express();
 
 app.use((req, res, next) => {
         Promise.all([
+
           axios.get(backendUrl + '/seo/'),
           axios.get(backendUrl + '/products/'),
+          axios.get(backendUrl + '/products/filters'),
+          axios.get(backendUrl + '/products/categories')
 
         ]).then(values => {
             const products = values[1].data.message;
             const seo = values[0].data.message;
+            const filters = values[2].data.fils;
+            const categories = values[3].data.cats;
+
             const mainSeo = seo.filter(el => el.name === 'Menu')[0];
             const deliverySeo = seo.filter(el => el.name === 'Delivery')[0];
             const contactsSeo = seo.filter(el => el.name === 'Contacts')[0];
@@ -30,6 +36,8 @@ app.use((req, res, next) => {
 
             //products
             req.products = products;
+            req.categories = categories;
+            req.filters = filters;
 
             next();
         })
@@ -143,19 +151,16 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
   });
 });
 
-app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/:routeProd'], (req, res) => {
+//products
+app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/:routeProd'], 
+(req, res, next) => {
   const filePath = path.resolve(__dirname, 'index.html');
   const products = req.products;
 
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
   if (routeCat === 'order') {
-    fs.readFile(filePath, 'utf8', function (err,data) {
-      if (err) {
-        return console.log(err);
-      }
-      res.send(data);
-    });
+    next();
   } else {
     const product = products.filter(el => {
       return el.route === routeProd && el.categoryId.route === routeCat
@@ -175,6 +180,62 @@ app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/
     });
   }
 });
+
+//filters
+app.get(['/zp/:routeFil', '/dp/:routeFil', '/kh/:routeFil'], (req, res, next) => {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const filters = req.filters;
+  const routeCat = req.params.routeFil;
+
+  const filter = filters.filter(el => el.route === routeCat)[0];
+  console.log(filter);
+
+  if (!filter) {
+    next();
+  } else {
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      
+      // replace the special strings with server generated strings
+      data = data.replace(/\$DESCRIPTION/g, filter.seo_description);
+      data = data.replace(/\$KEYWORDS/g, filter.seo_keywords);
+      data = data.replace(/\$OG_TITLE/g, filter.seo_title);
+      data = data.replace(/\$OG_DESCRIPTION/g, filter.seo_description);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + filter.image);
+      res.send(result);
+    });
+  }
+});
+
+//categories
+app.get(['/zp/:routeCat', '/dp/:routeCat', '/kh/:routeCat'], (req, res, next) => {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const categories = req.categories;
+  const routeCat = req.params.routeCat;
+
+  const category = categories.filter(el => el.route === routeCat)[0];
+
+  if (!category) {
+    next();
+  } else {
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      
+      // replace the special strings with server generated strings
+      data = data.replace(/\$DESCRIPTION/g, category.seo_description);
+      data = data.replace(/\$KEYWORDS/g, category.seo_keywords);
+      data = data.replace(/\$OG_TITLE/g, category.seo_title);
+      data = data.replace(/\$OG_DESCRIPTION/g, category.seo_description);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      res.send(result);
+    });
+  }
+});
+
 
 app.use(express.static(path.resolve(__dirname, '.')));
 
