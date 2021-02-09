@@ -7,25 +7,35 @@ const backendUrl = 'https://backend.24rolls.com.ua';
 
 const app = express();
 
-app.use(async (req, res, next) => {
-    try {
-        const seo = await axios.get(backendUrl + '/seo/');
+app.use((req, res, next) => {
+        Promise.all([
+          axios.get(backendUrl + '/seo/'),
+          axios.get(backendUrl + '/products/'),
 
-        const mainSeo = seo.data.message.filter(el => el.name === 'Menu')[0];
-        const deliverySeo = seo.data.message.filter(el => el.name === 'Delivery')[0];
-        const contactsSeo = seo.data.message.filter(el => el.name === 'Contacts')[0];
-        const blogSeo = seo.data.message.filter(el => el.name === 'Blog')[0];
-        const sharesSeo = seo.data.message.filter(el => el.name === 'Actions')[0];
-        req.mainSeo = mainSeo;
-        req.deliverySeo = deliverySeo;
-        req.contactsSeo = contactsSeo;
-        req.blogSeo = blogSeo;
-        req.sharesSeo = sharesSeo;
-        next();
-    }
-    catch (err) {
-        throw new Error('seo has broken');
-    }
+        ]).then(values => {
+            const products = values[1].data.message;
+            const seo = values[0].data.message;
+            const mainSeo = seo.filter(el => el.name === 'Menu')[0];
+            const deliverySeo = seo.filter(el => el.name === 'Delivery')[0];
+            const contactsSeo = seo.filter(el => el.name === 'Contacts')[0];
+            const blogSeo = seo.filter(el => el.name === 'Blog')[0];
+            const sharesSeo = seo.filter(el => el.name === 'Actions')[0];
+
+            //seo
+            req.mainSeo = mainSeo;
+            req.deliverySeo = deliverySeo;
+            req.contactsSeo = contactsSeo;
+            req.blogSeo = blogSeo;
+            req.sharesSeo = sharesSeo;
+
+            //products
+            req.products = products;
+
+            next();
+        })
+        .catch(err => {
+          throw new Error('failed loading')
+        });
 }); 
 
 //menu
@@ -131,6 +141,39 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
+});
+
+app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/:routeProd'], (req, res) => {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const products = req.products;
+
+  const routeCat = req.params.routeCat;
+  const routeProd = req.params.routeProd;
+  if (routeCat === 'order') {
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      res.send(data);
+    });
+  } else {
+    const product = products.filter(el => {
+      return el.route === routeProd && el.categoryId.route === routeCat
+    })[0];
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      
+      // replace the special strings with server generated strings
+      data = data.replace(/\$DESCRIPTION/g, product.seo_description);
+      data = data.replace(/\$KEYWORDS/g, product.seo_keywords);
+      data = data.replace(/\$OG_TITLE/g, product.seo_title);
+      data = data.replace(/\$OG_DESCRIPTION/g, product.seo_description);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + product.image);
+      res.send(result);
+    });
+  }
 });
 
 app.use(express.static(path.resolve(__dirname, '.')));
