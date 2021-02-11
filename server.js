@@ -340,7 +340,7 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   }
 });
 
-app.get('*', function(req, res) {
+/* app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
   console.log("last", mainSeo);
@@ -359,6 +359,6 @@ app.get('*', function(req, res) {
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + mainSeo.image);
     res.send(result);
   });
-});
+}); */
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
