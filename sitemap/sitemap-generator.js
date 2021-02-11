@@ -8,7 +8,7 @@ const Sitemap = require("react-router-sitemap").default;
 async function generateSitemap() {
 
     const routes = await router();
-    console.log(routes);
+    console.log("started build");
       return (
         new Sitemap(routes)
             .build("https://24rolls.zp.ua")
