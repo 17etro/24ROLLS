@@ -101,7 +101,7 @@ app.get('/dp/', function(req, res) {
 app.get('/zp', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.zpSeo;
-
+  console.log('zp')
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -121,7 +121,7 @@ app.get('/zp', function(req, res) {
 app.get('/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.mainSeo;
-
+  console.log('main')
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
