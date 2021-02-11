@@ -26,6 +26,9 @@ app.use((req, res, next) => {
             const posts = values[4].data;
 
             const mainSeo = seo.filter(el => el.name === 'Menu')[0];
+            const khSeo = seo.filter(el => el.name === 'Kh')[0];
+            const zpSeo = seo.filter(el => el.name === 'Zp')[0];
+            const dpSeo = seo.filter(el => el.name === 'Dp')[0];
             const deliverySeo = seo.filter(el => el.name === 'Delivery')[0];
             const contactsSeo = seo.filter(el => el.name === 'Contacts')[0];
             const blogSeo = seo.filter(el => el.name === 'Blog')[0];
@@ -33,6 +36,9 @@ app.use((req, res, next) => {
 
             //seo
             req.mainSeo = mainSeo;
+            req.khSeo = khSeo;
+            req.zpSeo = zpSeo;
+            req.dpSeo = dpSeo;
             req.deliverySeo = deliverySeo;
             req.contactsSeo = contactsSeo;
             req.blogSeo = blogSeo;
@@ -50,9 +56,9 @@ app.use((req, res, next) => {
           throw new Error('failed loading')
         });
 }); 
-
+// , '/zp', '/dp', '/kh'
 //menu
-app.get(['/', '/zp', '/dp', '/kh'], function(req, res) {
+app.get('/', function(req, res) {
     const filePath = path.resolve(__dirname, 'index.html');
     const seoObj = req.mainSeo;
   
@@ -70,6 +76,64 @@ app.get(['/', '/zp', '/dp', '/kh'], function(req, res) {
       result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
       res.send(result);
     });
+});
+//menu
+app.get('/kh', function(req, res) {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const seoObj = req.khSeo;
+
+  // read in the index.html file
+  fs.readFile(filePath, 'utf8', function (err,data) {
+    if (err) {
+      console.log(err);
+    }
+    
+    // replace the special strings with server generated strings
+    data = data.replace(/\$DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
+    data = data.replace(/\$OG_TITLE/g, seoObj.title);
+    data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
+    res.send(result);
+  });
+});
+app.get('/dp', function(req, res) {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const seoObj = req.dpSeo;
+
+  // read in the index.html file
+  fs.readFile(filePath, 'utf8', function (err,data) {
+    if (err) {
+      console.log(err);
+    }
+    
+    // replace the special strings with server generated strings
+    data = data.replace(/\$DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
+    data = data.replace(/\$OG_TITLE/g, seoObj.title);
+    data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
+    res.send(result);
+  });
+});
+app.get('/zp', function(req, res) {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const seoObj = req.zpSeo;
+
+  // read in the index.html file
+  fs.readFile(filePath, 'utf8', function (err,data) {
+    if (err) {
+      console.log(err);
+    }
+    
+    // replace the special strings with server generated strings
+    data = data.replace(/\$DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
+    data = data.replace(/\$OG_TITLE/g, seoObj.title);
+    data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
+    res.send(result);
+  });
 });
 
 //delivery
