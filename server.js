@@ -79,10 +79,10 @@ app.get('/', function(req, res) {
     });
 });
 //menu
-app.get('/kh', function(req, res) {
+app.get('/kh/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.khSeo;
-
+   console.log("from Kh",seoObj);
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -98,10 +98,10 @@ app.get('/kh', function(req, res) {
     res.send(result);
   });
 });
-app.get('/dp', function(req, res) {
+app.get('/dp/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.dpSeo;
-
+  console.log("from dp", seoObj);
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -341,7 +341,7 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
 app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
-  console.log(mainSeo);
+  console.log("last", mainSeo);
 
   const filePath = path.resolve(__dirname, 'index.html');
   fs.readFile(filePath, 'utf8', function (err,data) {

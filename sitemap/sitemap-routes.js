@@ -113,6 +113,7 @@ const func = async () => {
         }
       });
     }
+    info = info + '\n </urlset>';
     console.log(info)
     fs.writeFile(pathXML, info, () => {
         console.log("success");
