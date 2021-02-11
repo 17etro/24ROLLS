@@ -58,26 +58,7 @@ app.use((req, res, next) => {
 }); 
 // , '/zp', '/dp', '/kh'
 //menu
-app.get('/', function(req, res) {
-    const filePath = path.resolve(__dirname, 'index.html');
-    const seoObj = req.mainSeo;
-  
-    // read in the index.html file
-    fs.readFile(filePath, 'utf8', function (err,data) {
-      if (err) {
-        console.log(err);
-      }
-      
-      
-      // replace the special strings with server generated strings
-      data = data.replace(/\$DESCRIPTION/g, seoObj.description);
-      data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
-      data = data.replace(/\$OG_TITLE/g, seoObj.title);
-      data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
-      res.send(result);
-    });
-});
+
 //menu
 app.get('/kh/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
@@ -126,6 +107,27 @@ app.get('/zp', function(req, res) {
     if (err) {
       console.log(err);
     }
+    
+    // replace the special strings with server generated strings
+    data = data.replace(/\$DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
+    data = data.replace(/\$OG_TITLE/g, seoObj.title);
+    data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
+    res.send(result);
+  });
+});
+
+app.get('/', function(req, res) {
+  const filePath = path.resolve(__dirname, 'index.html');
+  const seoObj = req.mainSeo;
+
+  // read in the index.html file
+  fs.readFile(filePath, 'utf8', function (err,data) {
+    if (err) {
+      console.log(err);
+    }
+    
     
     // replace the special strings with server generated strings
     data = data.replace(/\$DESCRIPTION/g, seoObj.description);
