@@ -68,6 +68,7 @@ app.get('/', function(req, res) {
         console.log(err);
       }
       
+      
       // replace the special strings with server generated strings
       data = data.replace(/\$DESCRIPTION/g, seoObj.description);
       data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
