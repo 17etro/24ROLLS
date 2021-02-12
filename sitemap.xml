@@ -53,15 +53,15 @@
 <url> <loc> https://24rolls.zp.ua/zp/sets/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/sets/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/dp/sets/ </loc> </url> 
-<url> <loc> https://24rolls.zp.ua/zp/nuggets/ </loc> </url> 
-<url> <loc> https://24rolls.zp.ua/kh/nuggets/ </loc> </url> 
-<url> <loc> https://24rolls.zp.ua/dp/nuggets/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/zp/wok_and_pasta/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/wok_and_pasta/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/dp/wok_and_pasta/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/zp/salads/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/salads/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/dp/salads/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/zp/nuggets/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/kh/nuggets/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/dp/nuggets/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/zp/drinks/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/drinks/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/dp/drinks/ </loc> </url> 
@@ -171,6 +171,8 @@
 <url> <loc> https://24rolls.zp.ua/kh/sets/df27115c-93f1-49e1-8c34-4b0e6a57e7d0/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/spieces/91e88e5d-96b5-4352-bfb7-1400480ebeba/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/sets/58ec66e6-ed73-4049-80fb-40adb95fccbf/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/dp/sets/58ec66e6-ed73-4049-80fb-40adb95fccbf/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/zp/sets/58ec66e6-ed73-4049-80fb-40adb95fccbf/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/sets/25076ea6-5f16-4bcc-9bd3-ce67d9d79dae/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/spieces/be5ec6a1-d5cc-4f1b-8617-4d3acad88569/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/sets/f72052bc-b723-4f37-8deb-a2d0f358511e/ </loc> </url> 
@@ -190,6 +192,8 @@
 <url> <loc> https://24rolls.zp.ua/kh/spieces/72b3f9e4-82af-4da7-9596-a4d68b2753f5/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/drinks/94611bb7-ed52-425e-a369-aac6f3f53047/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/sets/24-rolls/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/dp/sets/24-rolls/ </loc> </url> 
+<url> <loc> https://24rolls.zp.ua/zp/sets/24-rolls/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/sets/39b2d8e6-afe3-413d-8297-410c02f7510a/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/spieces/ecfe7933-717f-4d40-addf-4645ea958a4a/ </loc> </url> 
 <url> <loc> https://24rolls.zp.ua/kh/drinks/34270e4f-1f3a-442d-9f22-a42a5c3b102f/ </loc> </url> 
