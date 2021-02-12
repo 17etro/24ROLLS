@@ -6,8 +6,8 @@ const axios = require('axios');
 const backendUrl = 'https://backend.24rolls.com.ua';
 
 const app = express();
+try{
 
-app.use(express.static(path.resolve(__dirname, '.')));
 
 app.use((req, res, next) => {
         Promise.all([
@@ -49,16 +49,16 @@ app.use((req, res, next) => {
             req.categories = categories;
             req.filters = filters;
             req.posts = posts;
-
+            
             next();
         })
         .catch(err => {
           throw new Error('failed loading')
         });
 }); 
-// , '/zp', '/dp', '/kh'
-//menu
-app.get('/', function(req, res) {
+
+
+app.get('/',function(req, res, next) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.mainSeo;
   console.log('main')
@@ -78,6 +78,7 @@ app.get('/', function(req, res) {
     res.send(result);
   });
 });
+
 //menu
 app.get('/kh/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
@@ -340,6 +341,9 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   }
 });
 
+
+app.use(express.static(path.resolve(__dirname, '.')));
+
 app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
@@ -352,13 +356,16 @@ app.get('*', function(req, res) {
     }
     
     // replace the special strings with server generated strings
-    data = data.replace(/\$DESCRIPTION/g, mainSeo.seo_description);
-    data = data.replace(/\$KEYWORDS/g, mainSeo.seo_keywords);
-    data = data.replace(/\$OG_TITLE/g, mainSeo.seo_title);
-    data = data.replace(/\$OG_DESCRIPTION/g, mainSeo.seo_description);
+    data = data.replace(/\$DESCRIPTION/g, mainSeo.description);
+    data = data.replace(/\$KEYWORDS/g, mainSeo.keywords);
+    data = data.replace(/\$OG_TITLE/g, mainSeo.title);
+    data = data.replace(/\$OG_DESCRIPTION/g, mainSeo.description);
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + mainSeo.image);
     res.send(result);
   });
 });
-
 app.listen(port, () => console.log(`Listening on port ${port}`));
+}
+catch(err){
+  console.log(err)
+}
