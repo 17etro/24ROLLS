@@ -4,10 +4,34 @@ const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
 const backendUrl = 'https://backend.24rolls.com.ua';
-
+const frontendUrl = 'https://24rolls.zp.ua';
 const app = express();
+try{
 
-app.use(express.static(path.resolve(__dirname, '.')));
+app.get('/',async(req, res, next) =>{
+    const filePath = path.resolve(__dirname, 'index.html');
+    const seo = await axios.get(backendUrl + '/seo/')
+    const seoObj = seo.data.message.filter(el => el.name === 'Menu')[0];
+    console.log('main')
+    // read in the index.html file
+    fs.readFile(filePath, 'utf8', function (err,data) {
+      if (err) {
+        console.log(err);
+      }
+      
+      
+      // replace the special strings with server generated strings
+      data = data.replace(/\$DESCRIPTION/g, seoObj.description);
+      data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
+      data = data.replace(/\$OG_TITLE/g, seoObj.title);
+      data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+      data = data.replace(/\$OG_ROUTE/g, frontendUrl + "/") ;
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
+      res.send(result);
+    });
+  });
+
+  app.use(express.static(path.resolve(__dirname, '.')));
 
 app.use((req, res, next) => {
         Promise.all([
@@ -49,35 +73,14 @@ app.use((req, res, next) => {
             req.categories = categories;
             req.filters = filters;
             req.posts = posts;
-
+            
             next();
         })
         .catch(err => {
           throw new Error('failed loading')
         });
 }); 
-// , '/zp', '/dp', '/kh'
-//menu
-app.get('/', function(req, res) {
-  const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.mainSeo;
-  console.log('main')
-  // read in the index.html file
-  fs.readFile(filePath, 'utf8', function (err,data) {
-    if (err) {
-      console.log(err);
-    }
-    
-    
-    // replace the special strings with server generated strings
-    data = data.replace(/\$DESCRIPTION/g, seoObj.description);
-    data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
-    data = data.replace(/\$OG_TITLE/g, seoObj.title);
-    data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
-    result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
-    res.send(result);
-  });
-});
+
 //menu
 app.get(['/kh/', '/kh'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
@@ -94,6 +97,7 @@ app.get(['/kh/', '/kh'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + "/kh/") ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -113,6 +117,7 @@ app.get(['/dp/', '/dp'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+   data = data.replace(/\$OG_ROUTE/g, frontendUrl + "/dp/") ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -132,6 +137,7 @@ app.get(['/zp', '/zp/'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + "/zp/") ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -143,7 +149,7 @@ app.get(['/zp', '/zp/'], function(req, res) {
 app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.deliverySeo;
-
+  const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -155,6 +161,7 @@ app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -164,7 +171,7 @@ app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
 app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.blogSeo;
-
+  const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -176,6 +183,7 @@ app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;    
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -185,7 +193,7 @@ app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
 app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.sharesSeo;
-
+  const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -197,6 +205,7 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -206,7 +215,7 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
 app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.contactsSeo;
-
+  const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -218,6 +227,7 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
     data = data.replace(/\$KEYWORDS/g, seoObj.keywords);
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -228,7 +238,7 @@ app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/
 (req, res, next) => {
   const filePath = path.resolve(__dirname, 'index.html');
   const products = req.products;
-
+  const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
 
@@ -250,6 +260,7 @@ app.get(['/zp/:routeCat/:routeProd', '/dp/:routeCat/:routeProd', '/kh/:routeCat/
       data = data.replace(/\$KEYWORDS/g, product.seo_keywords);
       data = data.replace(/\$OG_TITLE/g, product.seo_title);
       data = data.replace(/\$OG_DESCRIPTION/g, product.seo_description);
+      data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
       result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + product.image);
       res.send(result);
     });
@@ -261,7 +272,7 @@ app.get(['/zp/:routeFil', '/dp/:routeFil', '/kh/:routeFil'], (req, res, next) =>
   const filePath = path.resolve(__dirname, 'index.html');
   const filters = req.filters;
   const routeCat = req.params.routeFil;
-
+  const url = req.url;
   const filter = filters.filter(el => el.route === routeCat)[0];
   console.log(filter);
 
@@ -278,6 +289,7 @@ app.get(['/zp/:routeFil', '/dp/:routeFil', '/kh/:routeFil'], (req, res, next) =>
       data = data.replace(/\$KEYWORDS/g, filter.seo_keywords);
       data = data.replace(/\$OG_TITLE/g, filter.seo_title);
       data = data.replace(/\$OG_DESCRIPTION/g, filter.seo_description);
+      data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;      
       result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + filter.image);
       res.send(result);
     });
@@ -289,7 +301,7 @@ app.get(['/zp/:routeCat', '/dp/:routeCat', '/kh/:routeCat'], (req, res, next) =>
   const filePath = path.resolve(__dirname, 'index.html');
   const categories = req.categories;
   const routeCat = req.params.routeCat;
-
+  const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
   console.log(category);
 
@@ -306,6 +318,7 @@ app.get(['/zp/:routeCat', '/dp/:routeCat', '/kh/:routeCat'], (req, res, next) =>
       data = data.replace(/\$KEYWORDS/g, category.seo_keywords);
       data = data.replace(/\$OG_TITLE/g, category.seo_title);
       data = data.replace(/\$OG_DESCRIPTION/g, category.seo_description);
+      data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;      
       result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
       res.send(result);
     });
@@ -317,7 +330,7 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   const filePath = path.resolve(__dirname, 'index.html');
   const posts = req.posts;
   const postRoute = req.params.postRoute;
-
+  const url = req.url;
   const post = posts.filter(el => el.route === postRoute)[0];
   console.log(post)
 
@@ -334,17 +347,21 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
       data = data.replace(/\$KEYWORDS/g, post.seo_keywords);
       data = data.replace(/\$OG_TITLE/g, post.seo_title);
       data = data.replace(/\$OG_DESCRIPTION/g, post.seo_description);
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + post.image);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;      
+result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + post.image);
       res.send(result);
     });
   }
 });
 
+app.use(express.static(path.resolve(__dirname, '.')));
+
+
 app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
   console.log("last", mainSeo);
-
+  const url = req.url;
   const filePath = path.resolve(__dirname, 'index.html');
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -356,9 +373,13 @@ app.get('*', function(req, res) {
     data = data.replace(/\$KEYWORDS/g, mainSeo.keywords);
     data = data.replace(/\$OG_TITLE/g, mainSeo.title);
     data = data.replace(/\$OG_DESCRIPTION/g, mainSeo.description);
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + mainSeo.image);
     res.send(result);
   });
 });
-
 app.listen(port, () => console.log(`Listening on port ${port}`));
+}
+catch(err){
+  console.log(err)
+}
