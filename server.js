@@ -403,7 +403,7 @@ app.get('/zp/:routeCat', (req, res, next) => {
       data = data.replace(/\$OG_ALT/g, category.alt);
       data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;    
 
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.seo_image || " ");
       res.send(result);
     });
   }
@@ -432,7 +432,7 @@ app.get( '/kh/:routeCat', (req, res, next) => {
       data = data.replace(/\$OG_DESCRIPTION/g, category.seo_description);
       data = data.replace(/\$OG_ALT/g, category.alt);
           data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;    
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.seo_image || " ");
       res.send(result);
     });
   }
@@ -460,7 +460,7 @@ app.get('/dp/:routeCat', (req, res, next) => {
       data = data.replace(/\$OG_DESCRIPTION/g, category.seo_description_dp)|| "24rolls";
       data = data.replace(/\$OG_ALT/g, category.alt);
       data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;      
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.seo_image || " ");
       res.send(result);
     });
   }
