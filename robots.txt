@@ -1,5 +1,5 @@
 User-agent: *
 Disallow: 
 Allow: *
-Sitemap: https://24rolls.zp.ua/sitemap.xml
-Host: 24rolls.zp.ua
+Sitemap: https://24rolls.com.ua/sitemap.xml
+Host: 24rolls.com.ua
