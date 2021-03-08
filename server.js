@@ -39,39 +39,22 @@ app.use((req, res, next) => {
         Promise.all([
 
           axios.get(backendUrl + '/seo/'),
-          axios.get(backendUrl + '/products/'),
           axios.get(backendUrl + '/products/filters'),
           axios.get(backendUrl + '/products/categories'),
           axios.get(backendUrl + /posts/)
 
         ]).then(values => {
-            const products = values[1].data.message;
             const seo = values[0].data.message;
-            const filters = values[2].data.fils;
-            const categories = values[3].data.cats;
-            const posts = values[4].data;
+            const filters = values[1].data.fils;
+            const categories = values[2].data.cats;
+            const posts = values[3].data;
 
             const mainSeo = seo.filter(el => el.name === 'Menu')[0];
-            const khSeo = seo.filter(el => el.name === 'Kh')[0];
-            const zpSeo = seo.filter(el => el.name === 'Zp')[0];
-            const dpSeo = seo.filter(el => el.name === 'Dp')[0];
-            const deliverySeo = seo.filter(el => el.name === 'Delivery')[0];
-            const contactsSeo = seo.filter(el => el.name === 'Contacts')[0];
-            const blogSeo = seo.filter(el => el.name === 'Blog')[0];
-            const sharesSeo = seo.filter(el => el.name === 'Actions')[0];
 
             //seo
             req.mainSeo = mainSeo;
-            req.khSeo = khSeo;
-            req.zpSeo = zpSeo;
-            req.dpSeo = dpSeo;
-            req.deliverySeo = deliverySeo;
-            req.contactsSeo = contactsSeo;
-            req.blogSeo = blogSeo;
-            req.sharesSeo = sharesSeo;
 
             //products
-            req.products = products;
             req.categories = categories;
             req.filters = filters;
             req.posts = posts;
@@ -79,16 +62,18 @@ app.use((req, res, next) => {
             next();
         })
         .catch(err => {
+          console.log(err);
           throw new Error('failed loading')
         });
 }); 
 
 
 //menu
-app.get(['/kh','/kh/'], function(req, res) {
+app.get(['/kh','/kh/'], async(req, res) =>{
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.khSeo;
-  // read in the index.html file
+  const seo = await axios.get(backendUrl + '/seo/')
+  
+  const seoObj = seo.filter(el => el.name === 'Kh')[0];
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
       console.log(err);
@@ -105,9 +90,11 @@ app.get(['/kh','/kh/'], function(req, res) {
     res.send(result);
   });
 });
-app.get('/dp/', function(req, res) {
+app.get('/dp/', async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.dpSeo;
+  const seo = await axios.get(backendUrl + '/seo/')
+  
+  const seoObj = seo.filter(el => el.name === 'Dp')[0];
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -125,9 +112,11 @@ app.get('/dp/', function(req, res) {
     res.send(result);
   });
 });
-app.get( '/zp/', function(req, res) {
+app.get( '/zp/', async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.zpSeo;
+  const seo = await axios.get(backendUrl + '/seo/')
+  
+  const seoObj = seo.filter(el => el.name === 'Zp')[0];
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -149,9 +138,12 @@ app.get( '/zp/', function(req, res) {
 
 
 //delivery
-app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
+app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.deliverySeo;
+
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Delivery')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -172,9 +164,12 @@ app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
 });
 
 //blog
-app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
+app.get(['/zp/posts', '/dp/posts', '/kh/posts'], async (req, res, next) => {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.blogSeo;
+  
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Blog')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -195,9 +190,12 @@ app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
 });
 
 //shares
-app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
+app.get(['/zp/shares', '/dp/shares', '/kh/shares'], async (req, res, next) => {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.sharesSeo;
+  
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Actions')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -218,9 +216,12 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
 });
 
 //contacts
-app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
+app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.contactsSeo;
+  
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Contacts')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -242,9 +243,10 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
 
 //products
 app.get('/kh/:routeCat/:routeProd', 
-(req, res, next) => {
+async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const products = req.products;
+  const prods =  await axios.get(backendUrl + '/products/');
+  const products = prods.data.message;
   const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
@@ -274,9 +276,10 @@ app.get('/kh/:routeCat/:routeProd',
 });
 
 app.get('/zp/:routeCat/:routeProd', 
-(req, res, next) => {
+async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const products = req.products;
+  const prods =  await axios.get(backendUrl + '/products/');
+  const products = prods.data.message;
 const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
@@ -306,9 +309,10 @@ const url = req.url;
 });
 
 app.get('/dp/:routeCat/:routeProd', 
-(req, res, next) => {
+async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const products = req.products;
+  const prods =  await axios.get(backendUrl + '/products/');
+  const products = prods.data.message;
 const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
