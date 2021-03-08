@@ -1,0 +1,29 @@
+{
+  "apps": [
+    {
+      "name": "back",
+      "script": "../24ROLLS-WEBSITE/index.js",
+      "instances": 2,
+      "exec_mode": "cluster",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "main",
+      "script": "./server.js",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "admin",
+      "cwd": "../admin/24ROLLS-ADMIN_PANEL",
+      "script": "npm",
+      "args": "start",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}
