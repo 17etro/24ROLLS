@@ -73,7 +73,7 @@ app.get(['/kh','/kh/'], async(req, res) =>{
   const filePath = path.resolve(__dirname, 'index.html');
   const seo = await axios.get(backendUrl + '/seo/')
   
-  const seoObj = seo.filter(el => el.name === 'Kh')[0];
+  const seoObj = seo.data.message.filter(el => el.name === 'Kh')[0];
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
       console.log(err);
@@ -94,7 +94,7 @@ app.get('/dp/', async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
   const seo = await axios.get(backendUrl + '/seo/')
   
-  const seoObj = seo.filter(el => el.name === 'Dp')[0];
+  const seoObj = seo.data.message.filter(el => el.name === 'Dp')[0];
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -116,7 +116,7 @@ app.get( '/zp/', async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
   const seo = await axios.get(backendUrl + '/seo/')
   
-  const seoObj = seo.filter(el => el.name === 'Zp')[0];
+  const seoObj = seo.data.message.filter(el => el.name === 'Zp')[0];
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
