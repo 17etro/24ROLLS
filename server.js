@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
 const backendUrl = 'https://backend.24rolls.com.ua';
-const frontendUrl = 'https://24rolls.zp.ua';
+const frontendUrl = 'https://24rolls.com.ua';
 
 const app = express();
 try{
@@ -14,7 +14,6 @@ try{
     const filePath = path.resolve(__dirname, 'index.html');
     const seo = await axios.get(backendUrl + '/seo/')
     const seoObj = seo.data.message.filter(el => el.name === 'Menu')[0];
-    console.log('main')
     // read in the index.html file
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
@@ -89,7 +88,6 @@ app.use((req, res, next) => {
 app.get(['/kh','/kh/'], function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.khSeo;
-   console.log("from Kh",seoObj);
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -110,7 +108,6 @@ app.get(['/kh','/kh/'], function(req, res) {
 app.get('/dp/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.dpSeo;
-  console.log("from dp", seoObj);
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -131,7 +128,6 @@ app.get('/dp/', function(req, res) {
 app.get( '/zp/', function(req, res) {
   const filePath = path.resolve(__dirname, 'index.html');
   const seoObj = req.zpSeo;
-  console.log('zp')
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -238,7 +234,7 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
     data = data.replace(/\$OG_ALT/g, seoObj.alt);
-    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url ) ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -252,11 +248,9 @@ app.get('/kh/:routeCat/:routeProd',
   const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-console.log('kh products')
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
-  console.log(product);
 
   if (!product) {
     next();
@@ -286,11 +280,9 @@ app.get('/zp/:routeCat/:routeProd',
 const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-console.log('zp products')
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
-  console.log(product);
 
   if (!product) {
     next();
@@ -320,11 +312,9 @@ app.get('/dp/:routeCat/:routeProd',
 const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-  console.log('dp products')
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
-  console.log(product);
 
   if (!product) {
     next();
@@ -355,7 +345,6 @@ app.get(['/zp/:routeFil', '/dp/:routeFil', '/kh/:routeFil'], (req, res, next) =>
   const routeCat = req.params.routeFil;
   const url = req.url;
   const filter = filters.filter(el => el.route === routeCat)[0];
-  console.log(filter);
 
   if (!filter) {
     next();
@@ -385,7 +374,6 @@ app.get('/zp/:routeCat', (req, res, next) => {
   const routeCat = req.params.routeCat;
   const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
-  console.log("categiry here",category);
 
   if (!category) {
     next();
@@ -415,7 +403,6 @@ app.get( '/kh/:routeCat', (req, res, next) => {
   
   const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
-  console.log("categiry here",category);
 
   if (!category) {
     next();
@@ -443,7 +430,6 @@ app.get('/dp/:routeCat', (req, res, next) => {
   const routeCat = req.params.routeCat;
   const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
-  console.log("categiry here",category);
 
   if (!category) {
     next();
@@ -473,7 +459,6 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   const postRoute = req.params.postRoute;
   const url = req.url;
   const post = posts.filter(el => el.route === postRoute)[0];
-  console.log(post)
 
   if (!post) {
     next();
@@ -503,7 +488,7 @@ app.use(express.static(path.resolve(__dirname, '.')));
 app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
-  console.log("last", mainSeo);
+  console.log("last");
   const url = req.url;
   const filePath = path.resolve(__dirname, 'index.html');
   fs.readFile(filePath, 'utf8', function (err,data) {

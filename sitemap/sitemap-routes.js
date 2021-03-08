@@ -85,9 +85,9 @@ const func = async () => {
       posts.map((el) => [
         (info =
           info +
-          `<url> <loc> https://24rolls.com.ua/zp/${el.route}/ </loc> </url> \n` +
-          `<url> <loc> https://24rolls.com.ua/kh/${el.route}/ </loc> </url> \n` +
-          `<url> <loc> https://24rolls.com.ua/dp/${el.route}/ </loc> </url> \n`),
+          `<url> <loc> https://24rolls.com.ua/zp/posts/${el.route}/ </loc> </url> \n` +
+          `<url> <loc> https://24rolls.com.ua/kh/posts/${el.route}/ </loc> </url> \n` +
+          `<url> <loc> https://24rolls.com.ua/dp/posts/${el.route}/ </loc> </url> \n`),
       ]);
     }
     {
