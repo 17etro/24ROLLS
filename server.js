@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
 const backendUrl = 'https://backend.24rolls.com.ua';
-const frontendUrl = 'https://24rolls.zp.ua';
+const frontendUrl = 'https://24rolls.com.ua';
 
 const app = express();
 try{
@@ -14,7 +14,6 @@ try{
     const filePath = path.resolve(__dirname, 'index.html');
     const seo = await axios.get(backendUrl + '/seo/')
     const seoObj = seo.data.message.filter(el => el.name === 'Menu')[0];
-    console.log('main')
     // read in the index.html file
     fs.readFile(filePath, 'utf8', function (err,data) {
       if (err) {
@@ -40,39 +39,22 @@ app.use((req, res, next) => {
         Promise.all([
 
           axios.get(backendUrl + '/seo/'),
-          axios.get(backendUrl + '/products/'),
           axios.get(backendUrl + '/products/filters'),
           axios.get(backendUrl + '/products/categories'),
           axios.get(backendUrl + /posts/)
 
         ]).then(values => {
-            const products = values[1].data.message;
             const seo = values[0].data.message;
-            const filters = values[2].data.fils;
-            const categories = values[3].data.cats;
-            const posts = values[4].data;
+            const filters = values[1].data.fils;
+            const categories = values[2].data.cats;
+            const posts = values[3].data;
 
             const mainSeo = seo.filter(el => el.name === 'Menu')[0];
-            const khSeo = seo.filter(el => el.name === 'Kh')[0];
-            const zpSeo = seo.filter(el => el.name === 'Zp')[0];
-            const dpSeo = seo.filter(el => el.name === 'Dp')[0];
-            const deliverySeo = seo.filter(el => el.name === 'Delivery')[0];
-            const contactsSeo = seo.filter(el => el.name === 'Contacts')[0];
-            const blogSeo = seo.filter(el => el.name === 'Blog')[0];
-            const sharesSeo = seo.filter(el => el.name === 'Actions')[0];
 
             //seo
             req.mainSeo = mainSeo;
-            req.khSeo = khSeo;
-            req.zpSeo = zpSeo;
-            req.dpSeo = dpSeo;
-            req.deliverySeo = deliverySeo;
-            req.contactsSeo = contactsSeo;
-            req.blogSeo = blogSeo;
-            req.sharesSeo = sharesSeo;
 
             //products
-            req.products = products;
             req.categories = categories;
             req.filters = filters;
             req.posts = posts;
@@ -80,17 +62,18 @@ app.use((req, res, next) => {
             next();
         })
         .catch(err => {
+          console.log(err);
           throw new Error('failed loading')
         });
 }); 
 
 
 //menu
-app.get(['/kh/', '/kh'], function(req, res) {
+app.get(['/kh','/kh/'], async(req, res) =>{
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.khSeo;
-   console.log("from Kh",seoObj);
-  // read in the index.html file
+  const seo = await axios.get(backendUrl + '/seo/')
+  
+  const seoObj = seo.data.message.filter(el => el.name === 'Kh')[0];
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
       console.log(err);
@@ -107,10 +90,11 @@ app.get(['/kh/', '/kh'], function(req, res) {
     res.send(result);
   });
 });
-app.get(['/dp/', '/dp'], function(req, res) {
+app.get('/dp/', async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.dpSeo;
-  console.log("from dp", seoObj);
+  const seo = await axios.get(backendUrl + '/seo/')
+  
+  const seoObj = seo.data.message.filter(el => el.name === 'Dp')[0];
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -128,10 +112,11 @@ app.get(['/dp/', '/dp'], function(req, res) {
     res.send(result);
   });
 });
-app.get(['/zp', '/zp/'], function(req, res) {
+app.get( '/zp/', async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.zpSeo;
-  console.log('zp')
+  const seo = await axios.get(backendUrl + '/seo/')
+  
+  const seoObj = seo.data.message.filter(el => el.name === 'Zp')[0];
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
@@ -153,9 +138,12 @@ app.get(['/zp', '/zp/'], function(req, res) {
 
 
 //delivery
-app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
+app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.deliverySeo;
+
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Delivery')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -176,9 +164,12 @@ app.get(['/zp/delivery', '/dp/delivery', '/kh/delivery'], function(req, res) {
 });
 
 //blog
-app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
+app.get(['/zp/posts', '/dp/posts', '/kh/posts'], async (req, res, next) => {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.blogSeo;
+  
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Blog')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -199,9 +190,12 @@ app.get(['/zp/posts', '/dp/posts', '/kh/posts'], function(req, res) {
 });
 
 //shares
-app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
+app.get(['/zp/shares', '/dp/shares', '/kh/shares'], async (req, res, next) => {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.sharesSeo;
+  
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Actions')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -222,9 +216,12 @@ app.get(['/zp/shares', '/dp/shares', '/kh/shares'], function(req, res) {
 });
 
 //contacts
-app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
+app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const seoObj = req.contactsSeo;
+  
+  const seo = await axios.get(backendUrl + '/seo/')
+  const seoObj = seo.filter(el => el.name === 'Contacts')[0];
+
   const url = req.url;
   // read in the index.html file
   fs.readFile(filePath, 'utf8', function (err,data) {
@@ -238,7 +235,7 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
     data = data.replace(/\$OG_TITLE/g, seoObj.title);
     data = data.replace(/\$OG_DESCRIPTION/g, seoObj.description);
     data = data.replace(/\$OG_ALT/g, seoObj.alt);
-    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;
+    data = data.replace(/\$OG_ROUTE/g, frontendUrl + url ) ;
     result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + seoObj.image);
     res.send(result);
   });
@@ -246,17 +243,16 @@ app.get(['/zp/about-us', '/dp/about-us', '/kh/about-us'], function(req, res) {
 
 //products
 app.get('/kh/:routeCat/:routeProd', 
-(req, res, next) => {
+async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const products = req.products;
+  const prods =  await axios.get(backendUrl + '/products/');
+  const products = prods.data.message;
   const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-console.log('kh products')
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
-  console.log(product);
 
   if (!product) {
     next();
@@ -280,17 +276,16 @@ console.log('kh products')
 });
 
 app.get('/zp/:routeCat/:routeProd', 
-(req, res, next) => {
+async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const products = req.products;
+  const prods =  await axios.get(backendUrl + '/products/');
+  const products = prods.data.message;
 const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-console.log('zp products')
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
-  console.log(product);
 
   if (!product) {
     next();
@@ -314,17 +309,16 @@ console.log('zp products')
 });
 
 app.get('/dp/:routeCat/:routeProd', 
-(req, res, next) => {
+async (req, res, next) =>  {
   const filePath = path.resolve(__dirname, 'index.html');
-  const products = req.products;
+  const prods =  await axios.get(backendUrl + '/products/');
+  const products = prods.data.message;
 const url = req.url;
   const routeCat = req.params.routeCat;
   const routeProd = req.params.routeProd;
-  console.log('dp products')
   const product = products.filter(el => {
     return el.route === routeProd && el.categoryId.route === routeCat
   })[0];
-  console.log(product);
 
   if (!product) {
     next();
@@ -355,7 +349,6 @@ app.get(['/zp/:routeFil', '/dp/:routeFil', '/kh/:routeFil'], (req, res, next) =>
   const routeCat = req.params.routeFil;
   const url = req.url;
   const filter = filters.filter(el => el.route === routeCat)[0];
-  console.log(filter);
 
   if (!filter) {
     next();
@@ -385,7 +378,6 @@ app.get('/zp/:routeCat', (req, res, next) => {
   const routeCat = req.params.routeCat;
   const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
-  console.log("categiry here",category);
 
   if (!category) {
     next();
@@ -403,7 +395,7 @@ app.get('/zp/:routeCat', (req, res, next) => {
       data = data.replace(/\$OG_ALT/g, category.alt);
       data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;    
 
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.seo_image || " ");
       res.send(result);
     });
   }
@@ -415,7 +407,6 @@ app.get( '/kh/:routeCat', (req, res, next) => {
   
   const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
-  console.log("categiry here",category);
 
   if (!category) {
     next();
@@ -432,7 +423,7 @@ app.get( '/kh/:routeCat', (req, res, next) => {
       data = data.replace(/\$OG_DESCRIPTION/g, category.seo_description);
       data = data.replace(/\$OG_ALT/g, category.alt);
           data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;    
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.seo_image || " ");
       res.send(result);
     });
   }
@@ -443,7 +434,6 @@ app.get('/dp/:routeCat', (req, res, next) => {
   const routeCat = req.params.routeCat;
   const url = req.url;
   const category = categories.filter(el => el.route === routeCat)[0];
-  console.log("categiry here",category);
 
   if (!category) {
     next();
@@ -460,7 +450,7 @@ app.get('/dp/:routeCat', (req, res, next) => {
       data = data.replace(/\$OG_DESCRIPTION/g, category.seo_description_dp)|| "24rolls";
       data = data.replace(/\$OG_ALT/g, category.alt);
       data = data.replace(/\$OG_ROUTE/g, frontendUrl + url) ;      
-      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.image);
+      result = data.replace(/\$OG_IMAGE/g, backendUrl + '/' + category.seo_image || " ");
       res.send(result);
     });
   }
@@ -473,7 +463,6 @@ app.get(['/zp/posts/:postRoute', '/dp/posts/:postRoute', '/kh/posts/:postRoute']
   const postRoute = req.params.postRoute;
   const url = req.url;
   const post = posts.filter(el => el.route === postRoute)[0];
-  console.log(post)
 
   if (!post) {
     next();
@@ -503,7 +492,7 @@ app.use(express.static(path.resolve(__dirname, '.')));
 app.get('*', function(req, res) {
 
   const mainSeo = req.mainSeo;
-  console.log("last", mainSeo);
+  console.log("last");
   const url = req.url;
   const filePath = path.resolve(__dirname, 'index.html');
   fs.readFile(filePath, 'utf8', function (err,data) {

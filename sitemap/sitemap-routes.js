@@ -8,29 +8,29 @@ const backendUrl = "https://backend.24rolls.com.ua";
 
 let info = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url> <loc>https://24rolls.zp.ua/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/ </loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/ </loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/ </loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/shares/ </loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/shares/ </loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/shares/ </loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/delivery/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/delivery/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/delivery/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/about-us/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/about-us/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/about-us/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/posts/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/posts/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/posts/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/log-in/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/log-in/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/log-in/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/zp/favourite/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/dp/favourite/</loc> </url>
-<url> <loc>https://24rolls.zp.ua/kh/favourite/</loc> </url>
+<url> <loc>https://24rolls.com.ua/</loc> </url>
+<url> <loc>https://24rolls.com.ua/</loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/ </loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/ </loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/ </loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/shares/ </loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/shares/ </loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/shares/ </loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/delivery/</loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/delivery/</loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/delivery/</loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/about-us/</loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/about-us/</loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/about-us/</loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/posts/</loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/posts/</loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/posts/</loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/log-in/</loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/log-in/</loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/log-in/</loc> </url>
+<url> <loc>https://24rolls.com.ua/zp/favourite/</loc> </url>
+<url> <loc>https://24rolls.com.ua/dp/favourite/</loc> </url>
+<url> <loc>https://24rolls.com.ua/kh/favourite/</loc> </url>
 `;
 
 const blockedFilters = [
@@ -62,9 +62,9 @@ const func = async () => {
           : [
               (info =
                 info +
-                `<url> <loc> https://24rolls.zp.ua/zp/${el.route}/ </loc> </url> \n` +
-                `<url> <loc> https://24rolls.zp.ua/kh/${el.route}/ </loc> </url> \n` +
-                `<url> <loc> https://24rolls.zp.ua/dp/${el.route}/ </loc> </url> \n`),
+                `<url> <loc> https://24rolls.com.ua/zp/${el.route}/ </loc> </url> \n` +
+                `<url> <loc> https://24rolls.com.ua/kh/${el.route}/ </loc> </url> \n` +
+                `<url> <loc> https://24rolls.com.ua/dp/${el.route}/ </loc> </url> \n`),
             ]
       );
     }
@@ -75,9 +75,9 @@ const func = async () => {
           : [
               (info =
                 info +
-                `<url> <loc> https://24rolls.zp.ua/zp/${el.route}/ </loc> </url> \n` +
-                `<url> <loc> https://24rolls.zp.ua/kh/${el.route}/ </loc> </url> \n` +
-                `<url> <loc> https://24rolls.zp.ua/dp/${el.route}/ </loc> </url> \n`),
+                `<url> <loc> https://24rolls.com.ua/zp/${el.route}/ </loc> </url> \n` +
+                `<url> <loc> https://24rolls.com.ua/kh/${el.route}/ </loc> </url> \n` +
+                `<url> <loc> https://24rolls.com.ua/dp/${el.route}/ </loc> </url> \n`),
             ]
       );
     }
@@ -85,9 +85,9 @@ const func = async () => {
       posts.map((el) => [
         (info =
           info +
-          `<url> <loc> https://24rolls.zp.ua/zp/${el.route}/ </loc> </url> \n` +
-          `<url> <loc> https://24rolls.zp.ua/kh/${el.route}/ </loc> </url> \n` +
-          `<url> <loc> https://24rolls.zp.ua/dp/${el.route}/ </loc> </url> \n`),
+          `<url> <loc> https://24rolls.com.ua/zp/posts/${el.route}/ </loc> </url> \n` +
+          `<url> <loc> https://24rolls.com.ua/kh/posts/${el.route}/ </loc> </url> \n` +
+          `<url> <loc> https://24rolls.com.ua/dp/posts/${el.route}/ </loc> </url> \n`),
       ]);
     }
     {
@@ -99,15 +99,15 @@ const func = async () => {
             if (shop.name === "Kh") {
               info =
                 info +
-                `<url> <loc> https://24rolls.zp.ua/kh/${el.categoryId.route}/${el.route}/ </loc> </url> \n`;
+                `<url> <loc> https://24rolls.com.ua/kh/${el.categoryId.route}/${el.route}/ </loc> </url> \n`;
             } else if (shop.name === "Zp") {
               info =
                 info +
-                `<url> <loc> https://24rolls.zp.ua/zp/${el.categoryId.route}/${el.route}/ </loc> </url> \n`;
+                `<url> <loc> https://24rolls.com.ua/zp/${el.categoryId.route}/${el.route}/ </loc> </url> \n`;
             } else {
               info =
                 info +
-                `<url> <loc> https://24rolls.zp.ua/dp/${el.categoryId.route}/${el.route}/ </loc> </url> \n`;
+                `<url> <loc> https://24rolls.com.ua/dp/${el.categoryId.route}/${el.route}/ </loc> </url> \n`;
             }
           });
         }
